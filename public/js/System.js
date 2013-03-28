@@ -30,12 +30,12 @@
         createContents: function() {
             Logger.trace( 'create system info view' );
             var storage = this.model;
-            var t = this.model.get( 'total' );
-            var u = this.model.get( 'usage' );
-            var r = this.model.get( 'remainder' );
+
+            var t = this.model.get( 'inTotalSize' );
+            var u = this.model.get( 'inTotalUsage' );
+            var r = this.model.get( 'inRemainder' );
 
             Logger.trace( 'Total: ' + t + ', Usage: ' + u + ', Remain: ' + r );
-
             this.$body.append( this.$storageChart );
             var data = [['Usage',Number(u)], ['Remain',Number(r)] ];
          
@@ -62,7 +62,36 @@
                     },
                     location: 's'
                 }
-            }); 
+            });
+
+            // just testing code
+            $.ajax({
+                url: "system/cpuusages",
+                dataType: "json"
+            }).done(function(data) {
+                var cpu = data.cpuUsage;
+                $('#cpu-usages').text('CPU Usages :' + cpu );
+            });
+
+            $.ajax({
+                url: "system/phoneNumber",
+            }).done(function(data) {
+                var number = data.cpuUsage;
+                if ( number === "" ) {
+                    number = "undefined";
+                }
+                $('#phoneNumber').text('phoneNumber :' + number );
+            });
+
+            $.ajax({
+                url: "system/memoryInfo",
+                dataType: "json"
+            }).done(function(data) {
+                var t = data.total;
+                var u = data.usage;
+                var r = data.remainder;
+                $('#memory').text('Memory ( total:' + t + ', usage:' + u + ', remainder:' + r +')' );
+            });
         }
     } );
 
