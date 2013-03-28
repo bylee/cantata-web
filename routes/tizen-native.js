@@ -64,21 +64,48 @@ Tizen.Util.getParentFrom = function( path ) {
 	return path.substr( 0, index );
 }
 
+/* System */
 Tizen.System = Tizen.System || function () {
 }
 
-Tizen.System.getPhonenumber = function() {
+Tizen.System.getPhoneNumber = function() {
 	return '000-0000-0000';
 }
 
 Tizen.System.getStorage = function() {
+	var model = { 
+			"inTotalSize": "7146995712",
+			"inTotalUsage": "0",
+			"inAppUsage": "0",
+			"inAudioUsage": "0",
+			"inDownloadUsage": "0",
+			"inImageUsage": "0",
+			"inVideoUsage": "0",
+			"inRemainder": "7146995712",
+			"exTotalSize": "3870031872",
+			"exTotalUsage": "0",
+			"exAppUsage": "0",
+			"exAudioUsage": "0",
+			"exDownloadUsage": "0",
+			"exImageUsage": "0",
+			"exVideoUsage": "0",
+			"exRemainder": "3870031872"
+	};
+	return model;
+}
 
-    var model = {
-        'total': "2048000",
-        'usage': "1024000",
-        'remainder': "1024000"
-    };
-    return model;
+Tizen.System.getMemoryInfo = function() {
+	var model = {
+			"total": "508100608",
+			"usage": "493797376",
+			"remainder": "14303232"
+	};
+	return model;
+}
+
+Tizen.System.getCPUUsages = function() {
+	var model = { "cpuUsage": "0" };
+	return model;
 }
 
 /* FS */
