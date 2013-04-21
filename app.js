@@ -2,22 +2,44 @@
 
 // Module dependencies.
 var express = require( 'express' ) // Web framework
-//, connect = require( 'connect' )	// Server
 , routes = require( './routes/handle' )	// Our implement
 , user = require( './routes/user' )	// Dummy
 , http = require( 'http' )			// Web Server
 , io = require( 'socket.io' )		// Socket.io
 , path = require( 'path' );			// Path 
 
+var password = 'aaaa';
+
 var app = express();
 
+checkAuth = function( req, res, next ) {
+
+	console.log( 'Path: ', req.path );
+	console.log( 'Cookie: ', req.cookies );
+
+	if ( req.cookies && req.cookies.user ) {
+		console.log( req.cookies.user );
+		next();
+		return ;
+	}
+	if ( req.path == '/main.html' ) {
+		//res.send( 401 );
+		next();
+		return ;
+	}
+	next();
+};
+
+app.all( '*', checkAuth );
 app.configure(function(){
-	app.set( 'port', process.env.PORT || 3000 );
+	app.set( 'port', process.env.PORT || 4000 );
 	app.use( express.compress() );
 	app.use( express.favicon() );
 	app.use( express.logger('dev') );
+	app.use( express.cookieParser( 'thissecretrocks' ) );
 	app.use( express.bodyParser() );
 	app.use( express.methodOverride() );
+	app.use( express.session( { secret: 'thissecretrocks', cookie: { maxAge: 60000 } } ) );
 	app.use( app.router );
 	app.use( express.static( path.join( __dirname, 'public' ) ) );
 });
@@ -28,7 +50,16 @@ app.configure( 'development', function() {
 });
 
 // Register url mapping
-app.get( '/users', user.list );
+app.get( '/login', function( req, res ) {
+	console.log( 'login' );
+	if ( password == req.param( 'password' ) ) {
+		res.cookie( 'user', 'true' );
+		res.send( JSON.stringify( { success: true } ) );
+	} else {
+		res.send( JSON.stringify( { success: false } ) );
+	}
+} );
+
 
 
 // 시스템

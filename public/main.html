@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/tizenair.css"/>
+		<title>TizenAir 0.2</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<div id="curton"></div>
+		<script type="text/template" id="app-template">
+			<div id="top-margin" class="vertical-margin"></div>
+
+			<div id="body">
+				<div id="left-margin" class="horizontal-margin"></div>
+
+				<div id="widgets">
+					<div id="basic-widget" class="widget">
+					</div>
+					<div id="music-widget" class="widget">
+					</div>
+					<div class="separator"></div>
+
+					<div id="messages-widget" class="widget">
+					</div>
+					<div id="contacts-widget" class="widget">
+					</div>
+					<div class="separator"></div>
+					<div id="photos-widget" class="widget">
+					</div>
+					<div id="files-widget" class="widget">
+					</div>
+					<div class="separator"></div>
+					
+					<div id="apps-widget" class="widget">
+					</div>
+					<div class="separator"></div>
+					<div id="storage-widget" class="widget">
+					</div>
+				</div>
+				
+				<div id="right-margin" class="horizontal-margin"></div>
+			</div>
+
+			<div id="bottom-margin" class="vertical-margin"></div>
+		</script>
+
+		<script type="text/template" id="tmpl-basic-widget">
+			<div id="basic-header" class="horizontal-layout">
+				<img src="img/title_tizen_air.png" />
+				<div>
+					<div id="basic-device-name">Samsung Tizen-2.0</div>
+					<div class="horizontal-layout">
+						<div id="setting" class="clickable"></div>
+						<div id="basic-notification" class="clickable"></div>
+						<div id="basic-logout" class="clickable">Log Out</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script type="text/template" id="tmpl-music-widget">
+			<div id="music-header" class="horizontal-layout">
+				<div id="music-logo">
+					<img src="img/title_music.png" />
+					<div id="numOfSong" class="num-of-item">30</div>
+				</div>
+				<div id="play-control">
+					<div id="prev" class="clickable"></div>
+					<div id="play" class="clickable"></div>
+					<div id="next" class="clickable"></div>
+					<img src="img/player_sunken_line.png" />
+				</div>
+				<img id="album-picture" />
+				<div id="song-detail">
+					<div id="songTitle"><b id="song-name"></b></div>
+					<div id="song-progressbar">
+						<div id="played"></div>
+						<div id="remainder"></div>
+						<div id="handle" class="clickable"></div>
+					</div>
+					<div id="song-time">
+						<div id="playedText">0:00</div>
+						<div id="remainderText">0:00</div>
+					</div>
+					<audio id="audio" controls preload="auto" autobuffer>
+					</audio>
+					
+				</div>
+			</div>
+		</script>
+		<script type="text/template" id="message-widget-template">
+			<div id="message-header" class="horizontal-layout">
+				<img id="message-logo" src="img/title_message.png" />
+				<div id="message-num-of-message" class="num-of-item">3/24</div>
+				<div id="message-progressbar">
+					<div id="position"></div>
+				</div>
+			</div>
+
+			<div id="message-thread-container">
+				<div id="message-thread">
+					<img src="img/message_left.png" />
+					<div id="message-left">
+					</div>
+					<div id="message-messages">
+						<div id="message-title">David Glazer</div>
+						<div id="message-contents">
+							<div id="message-items">
+							</div>
+							<div id="message-scrollbar">
+							</div>
+						</div>
+					</div>
+					<div id="message-right">
+					</div>
+					<img src="img/message_right.png" />
+				</div>
+				<div id="message-thread-pre" class="clickable"></div>
+				<div id="message-thread-next" class="clickable"></div>
+			</div>
+			<div id="message-form">
+				<textarea id="message-text"></textarea>
+				<div id="message-send-btn" class="clickable"></div>
+			</div>
+		</script>
+		<script type="text/javascript" id="message-item-template">
+		</script>
+
+		<script type="text/template" id="contacts-widget-template">
+			<div id="contacts-header" class="horizontal-layout">
+				<div id="contacts-search" class="clickable"></div>
+				<div id="contacts-logo"></div>
+				<div id="contacts-num-of-contacts" class="num-of-item">306</div>
+				<div id="contacts-tabs" class="header-tabs">
+
+					<div class="header-tab selected clickable">
+						<div class="header-tab-title">All</div>
+						<div class="header-tab-right"></div>
+					</div>
+					<div class="header-tab clickable">
+						<div class="header-tab-title">Group1</div>
+						<div class="header-tab-right"></div>
+					</div>
+					<div class="header-tab clickable">
+						<div class="header-tab-title">Group2</div>
+						<div class="header-tab-right"></div>
+					</div>
+				</div>
+			</div>
+			<div id="contacts-contacts">
+			</div>
+		</script>
+
+		<script type="text/template" id="contacts-tab-template">
+			<div class="header-tab">
+				<div class="header-tab-title"></div>
+				<div class="header-tab-right"></div>
+			</div>
+		</script>
+		<script type="text/template" id="contacts-contact-template">
+			<div class="contacts-contact">
+				<img src="<%image%>" />
+				<div class="contacts-contact-info">
+				<div class="contacts-email"><%email%></div>
+				<div class="contacts-home"><%home%></div>
+				<div class="contacts-name"><%name%></div>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/template" id="photos-widget-template">
+			<div id="photos-header" class="horizontal-layout">
+				<img id="photos-logo" src="img/title_photos.png" />
+				<div id="photos-num-of-photos" class="num-of-item">487</div>
+				<div id="photos-tabs" class="header-tabs">
+					<div class="header-tab selected clickable">
+						<div class="header-tab-title">All</div>
+						<div class="header-tab-right"></div>
+					</div>
+					<div class="header-tab clickable">
+						<div class="header-tab-title">Album1</div>
+						<div class="header-tab-right"></div>
+					</div>
+					<div class="header-tab clickable">
+						<div class="header-tab-title">Album2</div>
+						<div class="header-tab-right"></div>
+					</div>
+					<div class="header-tab clickable">
+						<div class="header-tab-title">Album3</div>
+						<div class="header-tab-right"></div>
+					</div>
+				</div>
+			</div>
+			<div id="photos-body">
+				<div id="photos-view" class="horizontal-layout">
+					<div class="photos-photo1"></div>
+					<div class="photos-photo2"></div>
+					<div class="photos-photo3"></div>
+					<div class="photos-photo"></div>
+					<div class="photos-photo3"></div>
+					<div class="photos-photo2"></div>
+					<div class="photos-photo1"></div>
+				</div>
+				<div id="photos-scroll">
+					<div id="photos-handle"></div>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/template" id="files-path-fragment-template">
+			<div class="clickable"><%= name %></div>
+		</script>
+		<script type="text/template" id="files-widget-template">
+			<div id="files-header" class="horizontal-layout">
+				<div id="files-search"></div>
+				<img src="img/title_files.png" />
+				<div id="files-num-of-files">
+					<div class="num-of-item"></div>
+					<div id="files-cancel" class="clickable"></div>
+					<div id="files-paste" class="clickable"></div>
+				</div>
+			</div>
+			<div id="files-body">
+				<div id="files-path-line" class="horizontal-layout">
+					<div id="files-path-left"></div>
+					<ul id="files-path" class="horizontal-layout">
+					</ul>
+					<div id="files-path-right"></div>
+				</div>
+				<div id="files-list">
+				</div>
+			</div>
+		</script>
+
+		<script type="text/template" id="tmpl-files-file">
+			<div class="horizontal-layout files-file">
+				<div id="icon" class="files-<%= type%>-icon"></div>
+				<div id="info" class="files-file-info">
+					<div id="name" class="files-file-name"><%= name %></div>
+					<div class="files-file-size">0</div>
+				</div>
+				<div id="deleteBtn" class="files-file-operation"></div>
+				<div id="cutBtn" class="files-file-operation"></div>
+			</div>
+		</script>
+
+		<script type="text/template" id="apps-widget-template">
+			<div id="apps-logo">
+				<img src="img/title_apps.png" />
+				<div id="apps-num-of-app" class="num-of-item">60</div>
+			</div>
+			<div id="apps-container">
+				<div id="apps-apps">
+				</div>
+
+				<div id="apps-scroll">
+				</div>
+			</div>
+		</script>
+
+		<script type="text/template" id="tmpl-storage-widget">
+		<div id="storage-container">
+			<div id="storage-header" class="horizontal-layout">
+				<div id="storage-logo">
+					<img src="img/title_storage.png" />
+				</div>
+				<div id="storage-status">
+					<div class="gauge">
+						<div id="used"></div>
+						<div id="unused"></div>
+						<div id="value"></div>
+					</div>
+				</div>
+			</div>
+			<div id="storage-body">
+				<div class="horizontal-layout">
+					<div class="storage-title">Internal</div>
+					<div id="internal-status" class="sub-status">
+						<div class="gauge horizontal-layout">
+							<div class="music"></div>
+							<div class="photo"></div>
+							<div class="video"></div>
+							<div class="app"></div>
+							<div class="others"></div>
+						</div>
+					</div>
+				</div>
+				<div class="horizontal-layout">
+					<div class="storage-title">External</div>
+					<div id="internal-status" class="sub-status">
+						<div class="gauge">
+							<div class="music"></div>
+							<div class="photo"></div>
+							<div class="video"></div>
+							<div class="app"></div>
+							<div class="others"></div>
+						</div>
+					</div>
+				</div>
+				<div id="storage-legend" class="horizontal-layout">
+					<div class="storage-color storage-color-music"></div>
+					<div class="storage-color-name">Music</div>
+					<div class="storage-color storage-color-photo"></div>
+					<div class="storage-color-name">Photo</div>
+					<div class="storage-color storage-color-video"></div>
+					<div class="storage-color-name">Video</div>
+					<div class="storage-color storage-color-app"></div>
+					<div class="storage-color-name">App</div>
+					<div class="storage-color storage-color-other"></div>
+					<div class="storage-color-name">Other</div>
+				</div>
+			</div>
+			<div id="storage-footer" class="horizontal-layout">
+				<div class="storage-footer-left horizontal-layout">
+					<div id="battery-gauge" class="circle-gauge-container"></div>
+					<div id="rom-gauge" class="circle-gauge-container"></div>
+					<div id="ram-gauge" class="circle-gauge-container"></div>
+					<div id="cpu-gauge" class="circle-gauge-container"></div>
+				</div>
+				<div class="storage-footer-right horizontal-layout">
+					<div id="storage-contact"></div>
+					<div id="storage-message"></div>
+					<div id="storage-music"></div>
+					<div id="storage-photo"></div>
+					<div id="storage-video"></div>
+					<div id="storage-app"></div>
+					<div id="storage-other"></div>
+				</div>
+			</div>
+		</div>
+		</script>
+		<script type="text/template" id="tmpl-circle-gauge">
+			<div class="circle-gauge">
+				<div id="spinner" class="pie"></div>
+				<div id="filler" class="pie"></div>
+				<div id="mask" ></div>
+				<div id="inner"></div>
+			</div>
+			<div id="name"><%= name%></div>
+		</script>
+
+		<script type="text/template" id="tmpl-storage-overview">
+			<div class="storage-overview-container">
+				<div id="icon"></div>
+				<div id="name"></div>
+				<div id="numOfItem"></div>
+			</div>
+		</script>
+
+
+		<script type="text/template" id="photos-dialog">
+			<div class="horizontal-layout">
+				<img id="photos-logo" src="img/title_photos.png" />
+				<div id="photos-title">Lions_photo_008.jpeg</div>
+				<div id="photos-dialog-close"></div>
+			</div>
+		</script>
+		<script type="text/template" id="tmpl-setting-popup">
+			<div class="popup">
+				<div><img src="img/title_settings_popup.png"></img></div>
+			</div>
+		</script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/underscore.js"></script>
+		<script type="text/javascript" src="js/backbone.js"></script>
+		<script type="text/javascript" src="js/tizenair.js"></script>
+		<script>
+			$( function() {
+				var app = new App();
+				var appView = new AppView( { model: app } ).render();
+				$( '#app' ).append( appView.$el );
+			} );
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>TizenAir</title>
+		<style type="text/css">
+html {
+	background-image: url( '../img/bg_sample_h.jpg' );
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+form {
+	display: block;
+	width: 994px;
+}
+
+div {
+	display: inline-block;
+}
+
+#form-container {
+	width: 994px;
+	background: -webkit-gradient( linear, 0 0, 0 136, from( #dde4ea ), to( #ffffff ) );
+}
+
+#login-form {
+	margin-top: 36px;
+	margin-bottom: 67px;
+}
+#introduction {
+	width: 994px;
+	padding: 1px;
+	height: 424px;
+	margin: 0px 0px 6px 0px;
+	display: inline-block;
+}
+
+#password-text {
+	vertical-align: middle;
+	background-image: url( '../img/text_input_box_01.jpg' );
+	border: 0px;
+	width: 149px;
+	height: 29px;
+	margin: 0px 2px;
+	padding: 0px 7px;
+	text-align: left;
+}
+
+#login-button {
+	vertical-align: middle;
+	border: 1px;
+	width: 67px;
+	height: 33px;
+	margin: 0px 2px;
+	background-image: url( '../img/btn_login_01.png' );
+
+}
+#login-button:hover {
+	background-position: 0px -33px;
+}
+
+#login-button:active {
+	background-position: 0px -66px;
+}
+
+#login-button[disabled] {
+	background-position: 0px -99px;
+}
+@keyframes shake{
+	0% { transform: translate(2px, 1px) rotate(0deg); }
+	10% { transform: translate(-1px, -2px) rotate(-3deg); }
+	20% { transform: translate(-3px, 0px) rotate(3deg); }
+	30% { transform: translate(0px, 2px) rotate(0deg); }
+	40% { transform: translate(1px, -1px) rotate(3deg); }
+	50% { transform: translate(-1px, 2px) rotate(-3deg); }
+	60% { transform: translate(-3px, 1px) rotate(0deg); }
+	70% { transform: translate(2px, 1px) rotate(-3deg); }
+	80% { transform: translate(-1px, -1px) rotate(3deg); }
+	90% { transform: translate(2px, 2px) rotate(0deg); }
+	100% { transform: translate(1px, -2px) rotate(-3deg); }
+}
+
+@-moz-keyframes shake{
+	0% { -moz-transform: translate(2px, 1px) rotate(0deg); }
+	10% { -moz-transform: translate(-1px, -2px) rotate(-3deg); }
+	20% { -moz-transform: translate(-3px, 0px) rotate(3deg); }
+	30% { -moz-transform: translate(0px, 2px) rotate(0deg); }
+	40% { -moz-transform: translate(1px, -1px) rotate(3deg); }
+	50% { -moz-transform: translate(-1px, 2px) rotate(-3deg); }
+	60% { -moz-transform: translate(-3px, 1px) rotate(0deg); }
+	70% { -moz-transform: translate(2px, 1px) rotate(-3deg); }
+	80% { -moz-transform: translate(-1px, -1px) rotate(3deg); }
+	90% { -moz-transform: translate(2px, 2px) rotate(0deg); }
+	100% { -moz-transform: translate(1px, -2px) rotate(-3deg); }
+}
+
+@-webkit-keyframes shake {
+	0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+	10% { -webkit-transform: translate(-1px, -2px) rotate(-3deg); }
+	20% { -webkit-transform: translate(-3px, 0px) rotate(3deg); }
+	30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+	40% { -webkit-transform: translate(1px, -1px) rotate(3deg); }
+	50% { -webkit-transform: translate(-1px, 2px) rotate(-3deg); }
+	60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+	70% { -webkit-transform: translate(2px, 1px) rotate(-3deg); }
+	80% { -webkit-transform: translate(-1px, -1px) rotate(3deg); }
+	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+	100% { -webkit-transform: translate(1px, -2px) rotate(-3deg); }
+}
+
+.shake{
+	display:inline-block;
+	animation-name: shake;
+	animation-duration: 0.4s;
+	transform-origin:50% 50%;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+
+	-moz-animation-name: shake;
+	-moz-animation-duration: 0.4s;
+	-moz-transform-origin:50% 50%;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+
+	-webkit-animation-name: shake;
+	-webkit-animation-duration: 0.4s;
+	-webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<div>
+			<div id="introduction">
+				<img src="img/login_main.jpg">
+			</div>
+			<div id="form-container">
+				<form id="login-form">
+					<input type="text" id="password-text" ><input type="button" id="login-button" >
+				</form>
+			</div>
+		</div>
+		<script>
+			$( function() {
+				$( '#login-button' ).click( function() {
+					var $that = $( this );
+					var $form = $( '#login-form' );
+					if ( $form.hasClass( 'shake' ) ) {
+						return ;
+					}
+
+					$.ajax( '/login', {
+						dataType: 'json',
+						data: { password: $( '#password-text' ).val() },
+						success: function( result ) {
+							$that.removeAttr( 'disabled' );
+							if ( result.success ) {
+								document.cookie = 'user=true; path=/';
+								$( location ).attr( 'href', '/main.html' );
+							} else {
+								$form.addClass( 'shake' );
+								setTimeout( function() { $form.removeClass( 'shake' ) }, 300 );
+							}
+						}
+					} );
+				} );
+			} );
+		</script>
+	</body>
+</html>
+

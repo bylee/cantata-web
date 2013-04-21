@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Tue Apr 09 19:58:19 KST 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-013d-ee72-4737-0000037525a0 
+on database directory /home/bylee/.install/pic/data/rdb  with class loader sun.misc.Launcher$AppClassLoader@182f0db 
+Loaded from file:/home/bylee/.install/pic/lib/derby.jar
+java.vendor=Sun Microsystems Inc.
+java.runtime.version=1.6.0_32-b05
+user.dir=/home/bylee/dev/tizenair-workspace/cantata-web
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

@@ -23,10 +23,19 @@ pickUpFirst = function( array, value ) {
 };
 
 tizen = null;
-if ( fs.existsSync( './tizen-native.node' ) ) {
-	tizen = require( './tizen-native.node' );
-} else {
-	tizen = require( './tizen-native.js' );
+try
+{
+	tizen = require( './tizenair.node' );
+	console.log( "Native loaded" );
+	console.log( "Musics: ", tizen.Musics );
+	console.log( "Contacts: ", tizen.Contacts );
+}
+catch( e )
+{
+	console.log( 'Exception: ', e );
+	console.log( 'Stack: ', e.stack );
+	tizen = require( './tizen-mock.js' );
+	console.log( "Mock loaded" );
 }
 
 /* 시스템 관련 기능 */
@@ -113,28 +122,12 @@ exports.messages.send = function( req, res ) {
 	tizen.Messages.send( req.body.sender|| tizen.System.getPhonenumber(), req.body.receiver, req.body.text );
 };
 
-tizen.Messages.addListener( function() {
-	// 문자 리스너 바이딩
-} );
-
 
 /* 음악 관련 기능 */
 exports.musics = function( req, res ) {
 	var path = pickUpFirst( req.params, '/' );
 	console.log( '[Music] Path to list: ' + path );
-	var stat = tizen.Musics.getAttribute( path );
-	if ( stat.isDirectory() ) {
-		var musiclists = tizen.Musics.list( path );
-		if ( !musiclists ) {
-			res.send( 403, 'Sorry, unhandled path' );
-		}
-		res.send( musiclists );
-	} else if ( stat.isFile() ) {
-		console.log( '[Music] ' + path + ' downloaded' );
-		var music = tizen.Music.get( path );
-		res.attachment( tizen.Util.getFilenameFrom( path ) );
-		res.end( music, 'binary' );	
-	}
+	res.send( tizen.Musics.getAllMusicInfo() );
 };
 
 exports.musics.upload = function( req, res ) {
